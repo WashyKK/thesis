@@ -1,0 +1,97 @@
+    \chapter{INTRODUCTION}	   
+   \end{center}
+   \pagenumbering{arabic} 
+\section{Background}
+An unmanned aerial vehicle is an aircraft that is intended to fly without a pilot onboard. Its steering and flight control are handled by a dedicated control station behind the aircraft or by a suitable program\cite{peksa2024review}. A quadcopter, also known as a quadrotor, is one among other types of copter drone that are controlled by  four rotors. Each rotor is mounted at the end of a horizontal arm, and the propellers generate
+lift by spinning in opposite directions (two rotors spin in clockwise direction while other two rotors spin in anticlockwise direction). Owing to features like simple design, better stability, and ease of control, they are widely used compared to other types of UAVs \cite{peksa2024review}. Quadcopters have a symmetrical X- or H-shaped or hybrid frame with four arms as shown in  Figure \ref{fig:quadrotor-designs}, each supporting a rotor. The rotors are arranged in a square or rectangular pattern, and they can be independently
+controlled for stability and maneuverability. The drone’s flight is controlled by adjusting the
+speed of each rotor, allowing it to ascend, descend, rotate, and move horizontally 
+	
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{"figures/Quadrotor designs.JPG"}
+	\caption{Quadcopter designs: X-shaped (I4 and X4), H-shaped (H4) \cite{peksa2024review}.}
+	\label{fig:quadrotor-designs}
+\end{figure}
+
+%Applications of quadcopters 
+Unmanned Aerial Vehicle (UAV) quadcopters have diverse applications across multiple industries due to their agility, stability, and ease of control. In agriculture, they are used for crop monitoring, precision spraying, and pest control \cite{karam2024quadcopters}. In surveillance and security, they assist in border patrol, disaster response, and law enforcement operations \cite{criollo2024classification}. Quadcopters also play a vital role in delivery services, transporting medical supplies and consumer goods to remote areas \cite{geronel2022overview}. In construction and infrastructure, they provide aerial mapping, site inspections, and structural monitoring. Additionally, they are used in filmmaking, environmental monitoring, and search and rescue missions, making them invaluable in various fields \cite{peksa2024review}.
+
+
+However, their inherent underactuated dynamics, coupled with parametric uncertainties, unmodelled dynamics, aerodynamic disturbances and actuator nonlinearities, pose substancial challenges for robust trajectory tracking and attitude stabilization,
+%Quadrotor UAVs continue facing challenges in their control this is because it have,non linear dynamics of which the equations involve nonlinear functions like sine, cosine, exponential, products of variables, etc, Coupled Dynamics in which dynamics of one part of a system directly affects and is affected by the behavior of another part. Since UAVs is a Multi input Multi Output system  moving one joint or rotor might affect others. For example changing the pitch of a drone also slightly changes the altitude and Under Actuated-It have six degrees of freedom(X,Y,Z positions and Roll,Pitch and Yaw angles) but only four control inputs
+ these challenges  neccesitate the development of the robust control strategies capable of ensuring stable flights and precise trajectory tracking under adverse conditions.
+    
+    
+    %These challenges make it necessary to take careful consideration during controller design stage. Innovative control design techniques are necessary for guaranteing successful execution of tasks by these UAVs \cite{pratama2018quadcopter},\cite{abdulkareem2022modeling},\cite{vasichenko2023uav}.Taking into consideration this dynamic landscape, the design of control systems faces various hurdles which originates from the quadrotor's nonlinear dynamics and uncertainties. The intricacies include the need for a responsive control system, the challenges of under-actuation, the presence of model uncertainties, and the impact of external disturbances.
+%Stabilization control is of more importance  because it ensures both attitude and position are maintained for safe and stable operation \cite{tagay2021development},\cite{almomani2023stability}.
+
+%Artificial Neuro Networks (ANN) are widely used in control engineering because they are good in approximating complex function,making precise predictions and recognizing the hidden pattern in data. With regard to these unique features that ANNs have it is therefore noted that ANNs are powerful tool for tackling nonlinear and complex issues.
+
+%Multi Layer Perceptron(MLP) is employed for purpose of adaptively tuning parameters of Sliding Mode Controller (SMC) thus enhancing accuracy and stability of the system. This results in superior perfomance in the presence of uncertainties and external disturbances.
+
+%The MLP will be trained using the back propagation method thus adjusting the SMC design parameters dynamically based on the system feedback, ensuring robustness and high precision in control actions.
+
+%This approach is better for controlling quadrotor drones with non linear dynamics and varying operating conditions.Figure\ref{ANN-SMC Control Block Diagram} is a block diagram which shows the control architecture for a quadrotor.
+
+%\begin{figure}[h]
+   % \centering
+   %\includegraphics[width=0.75\linewidth]{Figures/ANN-SMC Control Block Diagram.JPG}
+    %\caption{Controller's block diagram with an auto tuned SMC for quadrotor controlling using ANN control(j=[Roll,Pitch,Yaw,X,Y,Z]} \cite{10917002}
+   % \label{ANN-SMC Control Block Diagram}
+%\end{figure}
+
+
+%It consists of a feedback loop,whereby the desired command for a specific variable such as position or orientation is compared with the the actual state of the quadrotor to generate an error signal. This error is processed by an SMC tuned in real time by an ANN. The ANN adapts the SMC's parameters based on the quadrotor's current state,ensuring accurate and stable control.The output of this control system is then applied to the quadrotor, adjusting its behaviour to align with the desired commands.
+
+%This study introduces a novel approach to real-time adaptive control by innovatively integrating a MLP with SMC
+
+
+
+\section{Statement of the Problem}
+
+Unmanned Aerial Vehicle (UAVs) quadrotors are increasingly deployed across diverse industrial applications, demanding highly precise, robust, and reliable control systems. They face strong nonlinear dynamics, underactuation, aerodynamic uncertainties, external disturbances (wind gusts), and payload variations, hence  are inherently unstable and highly coupled systems. These challenges make advanced control strategies essential for stability, robustness, precise trajectory tracking, and disturbance rejection.Conventional controllers such as Proportional Integral Derivative (PID) and Linear Quadratic Regulator (LQR) offer simplicity and satisfactory performance for linearized models, however, they struggle to maintain stability and accuracy when exposed to the strong nonlinearities, external disturbances, and parametric uncertainties inherent in quadrotor dynamics. More advanced strategies, including Model Predictive Control (MPC) and Sliding Mode Control (SMC), have been developed to address these challenges. Among them, SMC is especially attractive due to its inherent robustness against uncertainties and disturbances.
+ Classical SMC suffers from the well known chattering phenomenon, which may induce mechanical wear, excite unmodeled dynamics, and degrade overall control performance limiting its suitability for sensitive UAV applications. To overcome these limitations, Adaptive Super Twisting Sliding Mode Control (ASTSMC) has been introduced as an improved second order SMC technique capable of reducing chattering while maintaining finite time convergence and robustness. Despite its advantages, the performance of ASTSMC depends heavily on the appropriate selection of its control gains. Manually tuning these gains is time consuming, non systematic, and often fails to yield optimal performance under varying operating conditions or disturbances. To address this challenge, Particle Swarm Optimization (PSO) offers a promising solution. Particle Swarm Optimization is a population based metaheuristic algorithm capable of efficiently exploring high dimensional search spaces to identify optimal or near optimal parameter sets. Integrating PSO with ASTSMC enables automated, data driven tuning of controller gains, leading to improved convergence characteristics, reduced chattering, and enhanced robustness across different flight scenarios. This hybrid PSO-ASTSMC approach takes advantages of  robustness of sliding mode control and the optimization capability of swarm intelligence, ultimately providing a more adaptive, smooth, and high precision control strategy for quadrotor UAVs operating in uncertain and dynamic environments.
+
+
+\\
+ 
+
+
+
+\section{Objectives}
+
+The main objective of this research is to develop a Particle Swarm Optimized based Adaptive Super Twisting Sliding Mode Control (PSO-ASTSMC) strategy for a quadrotor Unmanned Aerial Vehicle  that enhances trajectory tracking accuracy and robustness against external disturbances and model uncertainties. To achieve this objective the following specific objectives were realized.
+
+%\subsection{ Specific Objectives}The specific objectives of this study are:
+
+\begin{enumerate}[label= \roman*)]
+\item 	 To develop a non singular  mathematical model of quadrotor free from gimbal lock.
+\item 	To develop an Adaptive Super Twisting Sliding Mode Control(ASMC) based on adaptive sliding surface using PSO algorithm..
+\item 	To evaluate perfomance of designed controller by doing simulations and validate experimentally.  
+
+\end{enumerate}
+			
+\section{Justification and Scope.}
+
+%Newton and Quaternion formalism was employed in deriving mathematical model for a quadrotor that mimics well dynamics of quadrotor by capturing aerodynamic drag and propeller induced forces which were unmodelled in different literatures and not considered during ASTSMC design, which is free from gimbal lock problems associated with euler model in high roll and pitch maneuvering angles. A novel Super Twisting Sliding Mode Controller that is capable to adapt under different environments for robust tracking control of quadrotor UAVs using quaternion modelling approach. and a Particle Swarm was used to obtain the optimal gains for sliding surfaces design parameters.Comprehensive simulation was done to validate derived mathematical model and designed controller. Particle Swarm algorithm was employed in tunning optimal gains for sliding surface parameters, thus improving trajectory tracking performance.An adaptation gain has been adopted to tune the gains of super twisting SMC.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%justification starts here
+%The development of a Particle Swarm Optimization (PSO) adaptive super twisting sliding mode controller based on quaternion derived mathematical modeling addresses critical limitations in existing control frameworks for nonlinear systems with parametric uncertainties. Traditional sliding mode controllers, while robust, often suffer from chattering phenomena and inadequate adaptation to time varying disturbances. The super twisting algorithm mitigates chattering through higher order sliding modes, yet its performance heavily depends on proper gain tuning.
+
+%Existing literature predominantly employs simplified mathematical models that neglect significant unmodeled dynamics, including aerodynamics drag and propeller induced forces. By deriving the system model using quaternion representation, singularity free attitude description is achieved, eliminating gimbal lock issues inherent in Euler angle formulations. The incorporation of previously unmodeled dynamics enhances model fidelity and controller applicability to real world scenarios.
+
+%The PSO based adaptation mechanism autonomously optimizes super twisting gains in real time, ensuring Lyapunov stability while maximizing convergence rates and disturbance rejection capabilities. This synergistic integration of bio inspired optimization with advanced nonlinear control theory provides superior transient response, steady state accuracy, and robustness compared to conventional fixed gain approaches, representing a significant advancement in adaptive sliding mode control for complex dynamical systems.
+%%%%%%%%%%%%%%%%
+This study develops a PSO-based adaptive super-twisting sliding mode controller using quaternion modeling to address challenges in nonlinear systems with uncertainties. Conventional sliding mode controllers exhibit chattering and limited adaptability, while the super-twisting algorithm reduces chattering but requires optimal gain tuning. Quaternion representation eliminates singularities and improves attitude description, and inclusion of aerodynamic drag and propeller effects enhances model accuracy. The PSO-based adaptation optimizes gains in real time, ensuring Lyapunov stability, faster convergence, and strong disturbance rejection. The study focuses on quadrotor UAV control, providing a robust, adaptive framework for accurate trajectory tracking and reliable operation in uncertain real-world flight environments.
+\\
+
+\section{Structure of the Thesis}
+
+The thesis is organized into five chapters including this introduction. In Chapter two related works are surveyed and analyzed to identify the existing gaps in the literature. Chapter three details the research methodology, including the derivation and verification of the mathematical model, as well as the design of the controller and its experimental validation. In chapter four discussion of research results is presented followed by  Chapter five where concluding remarks and recommendations are presented.
+
+%The thesis is structured into five chapters, including this introductory chapter. Chapter Two presents a comprehensive review of related literature, critically analyzing existing approaches and identifying key research gaps. Chapter Three details the research methodology, including the development and verification of the mathematical model, as well as the design of the controller and its experimental validation. Chapter Four discusses the obtained results, providing in-depth analysis and interpretation. Finally, Chapter Five concludes the study by summarizing the main findings and offering recommendations for future research.
+
+
+

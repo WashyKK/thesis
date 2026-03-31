@@ -1,0 +1,496 @@
+\chapter{ LITERATURE REVIEW}
+\section{Introduction}	
+%\noindent
+This chapter aims to provide a comprehensive and critical analysis of quadcopter control strategies with emphasis on robust nonlinear methods, particularly adaptive super twisting sliding mode control. The review systematically examines mathematical modeling approaches, classical and advanced control techniques, disturbance observer-based methods, and identifies critical limitations and research gaps that justify the development of enhanced Adaptive Super Twisting Sliding Mode Controllers  incorporating unmodeled dynamics compensation.
+
+
+\\
+%\noindent
+Quadcopter unmanned aerial vehicles (UAVs) represent a class of rotorcraft characterized by four rotors arranged in a cross or X configuration, offering vertical take off and landing (VTOL) capabilities, high maneuverability, and operational flexibility. These attributes have led to widespread adoption in diverse applications including aerial surveillance, package delivery, search and rescue operations, agricultural monitoring, and infrastructure inspection. Despite their advantages, quadcopters present significant control challenges due to their underactuated nature (six degrees of freedom controlled by four independent inputs), highly nonlinear dynamics, coupling between translational and rotational motions, and susceptibility to external disturbances such as wind gusts and aerodynamic effects~\cite{fatemi2025adaptive,gedefaw2024improved}.
+
+\noindent The control problem for quadcopters is further complicated by parametric uncertainties arising from payload variations, manufacturing tolerances, and aging effects, as well as unmodeled dynamics including aerodynamic drag, and rotor dynamics~\cite{abro2025swarm,wang2023robust}. Additionally, actuator constraints such as saturation limits and nonlinearities impose practical limitations on achievable control performance. These challenges necessitate the development of robust control strategies capable of ensuring stable flight and precise trajectory tracking under adverse conditions.
+
+\noindent Over the past decade, research in quadcopter control has evolved from classical linear control techniques to advanced nonlinear and adaptive methods. Classical approaches such as Proportional Integral Derivative (PID) control and Linear Quadratic Regulator (LQR) offer simplicity and computational efficiency but exhibit limited robustness against model uncertainties and external disturbances~\cite{samy2024robust,labbadi2020novel}. In contrast, nonlinear control techniques including backstepping, sliding mode control (SMC), and adaptive control provide enhanced robustness and disturbance rejection capabilities at the cost of increased computational complexity~\cite{pan2021robust,zhang2020adaptive}.
+% The findings are intended to guide future research toward more robust, practical, and implementable control solutions for autonomous quadcopter systems.
+%The literature on quadcopter UAVs  is rich with studies focusing on their theoretical background, controller design, and the exploration of advanced control strategies to address existing challenges. This review synthesizes the theoretical underpinnings of quadcopters, examines the state of the art in controller design, and identifies research gaps that justify the development of a quaternion based adaptive supertwisting sliding mode controller.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\noindent Quadcopter unmanned aerial vehicles (UAVs) have gained significant attention in both civilian and military applications due to their agility, vertical take off and landing capabilities, and maneuverability. However, their inherent underactuated dynamics, coupled with parametric uncertainties, unmodeled dynamics, aerodynamic disturbances, and actuator nonlinearities, pose substantial challenges for robust trajectory tracking and attitude stabilization. This comprehensive literature review examines the evolution of quadcopter control strategies, with particular emphasis on robust nonlinear control methods developed between 2020 and 2026.
+
+%\noindent The review systematically analyzes mathematical modeling approaches (Euler angles and quaternion formulations), classical control techniques (PID, LQR, backstepping), and advanced nonlinear methods including sliding mode control (SMC), higher-order SMC, and super-twisting algorithms. Critical analysis reveals that while classical controllers offer simplicity and ease of implementation, they exhibit limited robustness under uncertainties and external disturbances. Advanced sliding mode techniques, particularly adaptive super-twisting algorithms, demonstrate superior disturbance rejection and chattering reduction capabilities. However, significant research gaps persist regarding adaptive gain tuning, compensation for unmodeled dynamics, handling of strong time-varying disturbances, and practical implementation challenges related to actuator saturation and aerodynamic drag effects.
+
+%\noindent This review identifies critical limitations in existing super-twisting sliding mode controllers and highlights the necessity for developing Adaptive Super Twisting Sliding Mode Controllers (ASTSMC) that incorporate comprehensive unmodeled dynamics compensation, real-time adaptive gain adjustment, and enhanced robustness mechanisms. The findings provide a foundation for advancing quadcopter control research toward more reliable and practical autonomous flight systems.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%\noindent Over the past decade, research in quadcopter control has evolved from classical linear control techniques to advanced nonlinear and adaptive methods. Classical approaches such as Proportional Integral Derivative (PID) control, Linear Quadratic Regulator (LQR), and feedback linearization offer simplicity and computational efficiency but exhibit limited robustness against model uncertainties and external disturbances~\cite{samy2024robust,labbadi2020novel}. In contrast, nonlinear control techniques including backstepping, sliding mode control (SMC), and adaptive control provide enhanced robustness and disturbance rejection capabilities at the cost of increased computational complexity~\cite{pan2021robust,zhang2020adaptive}.
+
+\noindent Among nonlinear control methods, sliding mode control has emerged as a particularly promising approach due to its inherent robustness to matched uncertainties and disturbances. However, conventional first order SMC suffers from the chattering phenomenon high frequency oscillations in the control signal caused by discontinuous switching which can lead to actuator wear, energy inefficiency, and excitation of unmodeled high frequency dynamics~\cite{anderson2020constrained,mofid2020adaptive}. To address this limitation, higher order sliding mode techniques, particularly the super twisting algorithm (STA), have been developed to achieve finite time convergence while maintaining continuous control signals and significantly reducing chattering~\cite{abera2024improved,kashi2025finite}.
+
+\noindent Recent advances have focused on integrating adaptive mechanisms with super twisting sliding mode control to handle unknown disturbance bounds and time varying uncertainties. Adaptive super twisting algorithms employ online parameter adjustment laws to tune controller gains based on system states and estimation errors, thereby enhancing robustness without requiring precise knowledge of disturbance upper bounds~\cite{fatemi2025adaptive,sang2024quadrotor}. Furthermore, the integration of disturbance observers, neural networks, and fuzzy logic systems with adaptive SMC has shown promise in compensating for unmodeled dynamics and improving control performance~\cite{ahmed2022adaptive,shevidi2024adaptive}.
+
+\noindent  Existing adaptive super-twisting controllers often rely on simplified mathematical models that neglect important physical phenomena such as aerodynamic drag, rotor dynamics, and actuator nonlinearities. Moreover, many proposed methods lack comprehensive treatment of unmodeled dynamics compensation and real time adaptive gain tuning under strong time varying disturbances. The practical implementation of these controllers also faces challenges related to computational burden, sensor noise, and actuator saturation~\cite{wang2023robust,sun2023attitude}.
+%\noindent Despite these advances, significant research gaps remain. Existing adaptive super-twisting controllers often rely on simplified mathematical models that neglect important physical phenomena such as aerodynamic drag, rotor dynamics, and actuator nonlinearities. Moreover, many proposed methods lack comprehensive treatment of unmodeled dynamics compensation and real time adaptive gain tuning under strong time varying disturbances. The practical implementation of these controllers also faces challenges related to computational burden, sensor noise, and actuator saturation~\cite{wang2023robust,sun2023attitude}.
+
+%\noindent Despite these advances, significant research gaps remain. In particular, there is a lack of unified control frameworks that simultaneously incorporate high-fidelity quadcopter modeling, robust compensation of unmodeled dynamics, and efficient real-time adaptive gain tuning. Existing adaptive super-twisting controllers often rely on simplified mathematical models that neglect important physical phenomena such as aerodynamic drag, rotor dynamics, and actuator nonlinearities. Moreover, many proposed methods do not adequately address the combined effects of time-varying disturbances and parametric uncertainties within a single adaptive structure. In addition, limited attention has been given to the integration of optimization-based tuning strategies that can systematically enhance controller performance while reducing manual gain selection. The practical implementation of these controllers also faces challenges related to computational burden, sensitivity to sensor noise, and actuator saturation, which hinder their deployment in real-world systems~\cite{wang2023robust,sun2023attitude}.
+
+
+\section{Theoretical Background of Quadcopters UAVs}
+
+%Quadcopters are a type of UAV characterized by their four rotors, which provide lift and control. The dynamics of quadcopters are inherently nonlinear and underactuated, posing significant challenges for control design.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{itemize}
+    %\item Dynamics and Control Challenges: Quadcopters exhibit complex dynamics due to their nonlinear, coupled, and underactuated nature. This complexity is exacerbated by external disturbances such as wind, which can significantly affect stability and control performance \cite{yesmin2025sliding}.
+   % \item Attitude Representation: Traditional methods like Euler angles suffer from singularity issues, particularly in high-pitch or roll maneuvers. Quaternion-based representations offer a singularity-free alternative, providing a more robust framework for attitude control \cite{shevidi2024quaternion} and \cite{yazdanshenas2024quaternion}.
+    %\item .
+    %\item 
+%\end{itemize}
+
+
+
+
+\subsection{Mathematical Modeling of Quadcopter Dynamics}
+
+Accurate mathematical modeling forms the foundation for effective control system design. Quadcopter dynamics are typically described using rigid body mechanics, with the choice of attitude representation significantly influencing controller design, computational complexity, and singularity issues. This section examines the two predominant modeling approaches: Euler angle formulation and quaternion-based formulation.
+%%%%%%%%%%%%%%%%%%%%
+
+\noindent Euler angle modelling represents quadcopter attitude through three sequential rotations roll $(\phi)$, pitch $(\theta)$, and yaw $(\psi)$ that mathematically transform the body frame to the inertial reference frame via rotation matrices~\cite{colmenares2015position,colmenares2015integral,jebelli2023fault}. This parametrization defines the angular kinematics through a transformation matrix relating body frame angular velocities to Euler angle derivatives~\cite{colmenares2015position,acosta2020real}, establishing a nonlinear dynamic model that captures the six degree of freedom motion of quadcopters~\cite{jafar2016mathematical,silva2018modelagem}. 
+
+The approach offers several merits from a control engineering perspective. Euler angles provide physical intuitiveness, directly corresponding to observable roll, pitch, and yaw motions~\cite{mokhtari2004dynamic}, and their simplicity facilitates straightforward implementation in classical control architectures~\cite{davidson2024reinforcement,jafar2016mathematical}. Linearization around the hover equilibrium point, justified by small angle assumptions, reduces the transformation matrix to identity~\cite{acosta2020real}, enabling compatibility with PID and linear quadratic regulators for stabilization tasks~\cite{shah2018gain,bushra2018design,jafar2016mathematical}. 
+
+However, significant demerits constrain their applicability. The transformation matrix becomes singular when $\cos(\theta) = 0$~\cite{colmenares2015position,colmenares2015integral}, leading to gimbal lock a fundamental singularity that prevents unique attitude representation at $\pm 90^\circ$ pitch angles~\cite{alaimo2013comparison,abro2021performance}. This limitation renders Euler angles unsuitable for aggressive maneuvers requiring large attitude excursions~\cite{seshasayanan2022robust,alaimo2013comparison}. Additionally, the rotational dynamics exhibit strong nonlinear coupling between axes~\cite{hedjar2019robust,thanh2022quadcopter}, and linearized models break down when the vehicle diverges from operating points~\cite{thanh2022quadcopter}. Numerical instability at large angles and the inability to accommodate unmodeled dynamics such as payload variations further restrict Euler-based controllers~\cite{abro2021performance}, motivating alternative representations like quaternions for applications demanding robust performance across the full attitude space~\cite{alaimo2013comparison,abro2021performance}.
+
+
+
+%%%%%%%%%%%%%%%%
+%\subsubsection*{Euler Angle Formulation}
+
+%The Euler angle representation uses three angles roll ($\phi$), pitch ($\theta$), and yaw ($\psi$) to describe the quadcopter's orientation relative to an inertial reference frame. The translational dynamics are typically derived using Newton's second law, while rotational dynamics are obtained through the Newton Euler method~\cite{aghazamani2024fault,hassani2021robust}.% The general form of the dynamic model can be expressed as follows.
+
+%\subsubsection*{Translational Dynamics}
+
+%\begin{itemize}
+   % \item Position vector:
+    %\[
+   % \mathbf{p} = [x \;\; y \;\; z]^{\top}
+   % \]
+   % \item Velocity vector:
+   % \[
+   % \mathbf{v} = [\dot{x} \;\; \dot{y} \;\; \dot{z}]^{\top}
+   % \]
+   % \item Acceleration influenced by thrust force, gravitational force, and aerodynamic drag.
+%\end{itemize}
+
+%\subsubsection*{Rotational Dynamics}
+
+%\begin{itemize}
+    %\item Attitude angles:
+   % \[
+   % \boldsymbol{\eta} = [\phi \;\; \theta \;\; \psi]^{\top}
+   % \]
+    %\item Angular velocities:
+    %\[
+   % \boldsymbol{\omega} = [p \;\; q \;\; r]^{\top}
+   % \]
+  %  \item Control torques generated by differential rotor speeds.
+%\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\subsubsection*{Quadcopter Dynamics}
+
+%The translational and rotational dynamics of the quadcopter are described using position, velocity, attitude, and angular velocity states. The translational motion is represented by the position vector $\mathbf{p} = [x \;\; y \;\; z]^{\top}$ and the velocity vector $\mathbf{v} = [\dot{x} \;\; \dot{y} \;\; \dot{z}]^{\top}$, where the acceleration is governed by the combined effects of thrust force, gravitational force, and aerodynamic drag. The rotational motion is characterized by the attitude angles $\boldsymbol{\eta} = [\phi \;\; \theta \;\; \psi]^{\top}$ and the angular velocity vector $\boldsymbol{\omega} = [p \;\; q \;\; r]^{\top}$. The rotational dynamics are influenced by control torques generated through differential rotor speeds, which enable the quadcopter to achieve the desired orientation and stability.
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+%The Newton Euler formulation provides a straightforward representation suitable for control design and simulation. Studies by ~\cite{gedefaw2024improved} and ~\cite{elagib2023sliding} employed six degree of freedom (6 DOF) models using the Newton Euler method, incorporating external disturbances and parametric uncertainties. ~\cite{wang2023robust} developed a detailed Euler angle model that explicitly accounts for uncertain aerodynamic parameters, demonstrating the importance of including drag effects for accurate trajectory prediction.
+
+%However, the Euler angle representation suffers from inherent singularities, particularly gimbal lock, which occurs when the pitch angle approaches $\pm 90^\circ$. At these configurations, the roll and yaw axes become aligned, resulting in loss of one degree of freedom and numerical instabilities in the kinematic equations~\cite{wang2023robust,mousavi2024observer}. This limitation poses significant challenges for aggressive maneuvers and arbitrary three dimensional trajectories.
+
+
+%\subsubsection*{Quaternion-Based Formulation}
+
+To overcome the singularity issues associated with Euler angles, quaternion based representations have been increasingly adopted in recent quadcopter control research. Quaternions are four dimensional unit vectors that provide a singularity free, globally valid description of three dimensional rotations~\cite{roy2024design,nguyen2021adaptive}. The quaternion representation offers several advantages. It is singularity free, meaning there is no gimbal lock or coordinate singularities. Quaternions provide computational efficiency through fewer trigonometric operations compared to rotation matrices. They also exhibit superior numerical stability with better conditioning for numerical integration. Additionally, quaternions offer a compact representation using only four parameters instead of the nine required for rotation matrices. In  ~\cite{abera2024improved} Newton Quaternion formalism is employed  for quadcopter modeling, emphasizing its singularity free nature and suitability for aggressive trajectory tracking. The quaternion-based model represents attitude using a unit quaternion subject to the unit-norm constraint.
+%\[
+%\mathbf{q} = [q_0 \;\; q_1 \;\; q_2 \;\; q_3]^{\top}
+%\]
+%subject to the unit-norm constraint
+%\[
+%q_0^2 + q_1^2 + q_2^2 + q_3^2 = 1.
+%\]
+
+The rotational kinematics are expressed through quaternion multiplication, avoiding the trigonometric functions present in Euler angle kinematics. In ~\cite{yazdanshenas2024quaternion} developed a comprehensive quaternion based sliding mode control framework for six degree of freedom flight control, demonstrating improved performance in aggressive maneuvers. Similarly, A. shevidi et al ~\cite{shevidi2024quaternion} proposed quaternion based adaptive backstepping and fast terminal sliding mode control strategies, proving finite time convergence and robustness against unknown time varying uncertainties. In  ~\cite{sun2023attitude} quaternion modeling utilized  to avoid singularity and gimbal lock problems in fault tolerant attitude control design.
+
+
+%\subsubsection*{Comparative Analysis of Modeling Approaches}
+
+%Table~\ref{tab:model_comparison} summarizes the key characteristics, advantages, and limitations of Euler angle and quaternion based modeling approaches based on recent literature.
+
+
+%\begin{table}[h!]
+%\centering
+%\caption{Comparison of Quadcopter Modeling Approaches}
+%\label{tab:model_comparison}
+
+%\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3cm}
+%|>{\raggedright\arraybackslash}X
+%|>{\raggedright\arraybackslash}X|}
+%\hline
+%\textbf{Aspect} & \textbf{Euler Angle Formulation} & \textbf{Quaternion-Based Formulation} \\ \hline
+
+%Representation & Three angles ($\phi$, $\theta$, $\psi$) & Four-parameter unit vector \\ \hline
+
+%Singularities & Gimbal lock at $\theta = \pm 90^\circ$ & Singularity-free \\ \hline
+
+%Computational Cost & Moderate (trigonometric functions) & Lower (algebraic operations) \\ \hline
+
+%Intuitive Interpretation & High (direct physical meaning) & Low (abstract representation) \\ \hline
+
+%Numerical Stability & Lower (near singularities) & Higher (globally valid) \\ \hline
+
+%Suitability for Aggressive Maneuvers & Limited & Excellent \\ \hline
+
+%Implementation Complexity & Lower & Moderate \\ \hline
+
+%Recent Applications & 
+%\cite{gedefaw2024improved,wang2023robust,aghazamani2024fault,elagib2023sliding} &
+%\cite{abera2024improved,sun2023attitude,yazdanshenas2024quaternion,shevidi2024quaternion} \\ \hline
+
+%\end{tabularx}
+%\end{table}
+
+%\noindent The choice between Euler angles and quaternions depends on the specific application requirements. For applications involving moderate attitude variations and where intuitive interpretation is important, Euler angles remain practical. However, for aggressive maneuvers, aerobatic flight, and applications requiring global attitude representation, quaternion based formulations are strongly preferred~\cite{abera2024improved,yazdanshenas2024quaternion}.
+
+%\noindent Recent trends indicate increasing adoption of quaternion based models in advanced control research, particularly when combined with adaptive and robust control techniques. Wang et al.~\cite{wang2023robust} noted that while their backstepping controller used Euler angles, the singularity issue was addressed through careful design of continuous functions to replace inverse trigonometric operations. This hybrid approach demonstrates ongoing efforts to mitigate Euler angle limitations while maintaining intuitive physical interpretation.
+
+%\noindent The mathematical modeling must also account for external disturbances, parametric uncertainties, and unmodeled dynamics to enable robust controller design. Studies by Mofid et al.~\cite{mofid2020adaptive} and Ahmed et al.~\cite{ahmed2022adaptive} emphasized the importance of incorporating disturbance models in the dynamic equations, while Wang et al.~\cite{wang2023robust} explicitly modeled uncertain aerodynamic parameters. These considerations are critical for developing controllers capable of maintaining performance under real world operating conditions~\cite{fatemi2025adaptive,wang2023robust,mofid2020adaptive}.
+
+\subsection{Application and challenges on the control of UAVs}
+\noindent Quadcopter unmanned aerial vehicles (UAVs) have gained significant attention due to their vertical take-off and landing capability, high maneuverability, and operational flexibility. These features enable their deployment in a wide range of applications, including aerial surveillance, package delivery, search and rescue missions, agricultural monitoring, and infrastructure inspection. Their ability to operate in confined and complex environments makes them particularly suitable for both civilian and industrial tasks.
+
+Despite these advantages, quadcopters pose substantial control challenges. Their underactuated structure, characterized by six degrees of freedom controlled by only four inputs, leads to inherent control complexity. The system dynamics are highly nonlinear and exhibit strong coupling between translational and rotational motions, complicating accurate modeling and controller design. Furthermore, quadcopters are highly sensitive to external disturbances such as wind gusts and aerodynamic effects, which can significantly degrade stability and tracking performance.
+
+Additional challenges arise from parametric uncertainties due to payload variations, component wear, and manufacturing tolerances, as well as unmodeled dynamics such as aerodynamic drag and rotor effects. Actuator limitations, including saturation and nonlinear behavior, further constrain control performance. These factors collectively necessitate the development of robust and adaptive control strategies for reliable operation.
+
+\section{ The critiques of the existing literature relevant to the study  } 
+%The design of controllers for quadcopters has evolved significantly, with various approaches being explored to enhance performance and robustness.
+%\begin{itemize}
+    %\item Sliding Mode Control (SMC) is a popular choice for quadcopter control due to its robustness against disturbances and uncertainties. Variants like super twisting SMC (ST-SMC) and adaptive SMC have been developed to address issues such as chattering and parameter uncertainties \cite{abera2024improved} and \cite{yesmin2025sliding}.
+   % \item Quaternion-Based Control, such as Adaptive Backstepping Control (ABC) and Adaptive Fast Terminal Sliding Mode Control (AFTSMC), have been proposed to overcome singularity issues and ensure fast convergence. These methods also minimize control signal chattering, which is crucial for preventing actuator failure \cite{shevidi2024quaternion} and \cite{che2023adaptive}.
+    %\item Adaptive Super-Twisting Control: This approach combines the benefits of adaptive control and super-twisting SMC to achieve accurate trajectory tracking and disturbance rejection. It relaxes assumptions on disturbance bounds and adapts controller gains in real-time, enhancing robustness and performance \cite{rao2024adaptive} and \cite{hoang2018adaptive}.
+    %\item 
+%\end{itemize}
+
+\subsection{Classical Control Strategies}
+
+Classical control techniques have been extensively applied to quadcopter systems due to their simplicity, ease of implementation, and well established theoretical foundations. This section reviews the most commonly employed classical controllers PID and LQR and critically analyzes their limitations in handling uncertainties and disturbances.
+
+%\subsubsection*{PID Control}
+
+%Proportional Integral Derivative (PID) control represents the most widely used control strategy in industrial applications due to its simplicity and effectiveness for linear systems. In quadcopter control, PID controllers are typically implemented in cascaded architectures, with inner loops controlling angular rates and outer loops regulating attitude angles and position~\cite{samy2024robust,labbadi2020novel}.
+
+%The PID control law for a single channel can be expressed as:
+%\begin{equation}
+%u(t) = K_p e(t) + K_i \int e(\tau)\, d\tau + K_d \dot{e}(t)
+%\end{equation}
+%where $e(t)$ is the tracking error, and $K_p$, $K_i$, and $K_d$ are the proportional, integral, and derivative gains, respectively.
+
+%~\cite{abro2025swarm} extended classical PID control to fractional order PID (FOPID) for swarm coordination and trajectory tracking in quadrotor UAVs. The fractional order approach introduces additional tuning parameters (fractional orders of integration and differentiation), providing enhanced flexibility in shaping the closed loop response and improved disturbance rejection compared to integer order PID. The study demonstrated that FOPID control, combined with Lyapunov stability analysis and disturbance compensation mechanisms, achieved robust trajectory tracking for multiple coordinated quadrotors.
+%Despite its widespread use, PID control exhibits several fundamental limitations when applied to quadcopter systems. First, PID controllers demonstrate limited robustness as they are designed based on linearized models around operating points, resulting in degraded performance under large deviations, parametric uncertainties, and unmodeled dynamics~\cite{samy2024robust}. Second, while the integral term provides steady state error elimination, PID control offers limited rejection of time-varying external disturbances such as wind gusts~\cite{labbadi2020novel}. Third, the inherent coupling between translational and rotational dynamics in quadcopters is not explicitly addressed in decentralized PID architectures~\cite{mofid2020adaptive}. Finally, optimal PID gain selection remains challenging, particularly for time-varying systems and varying operating conditions~\cite{gedefaw2024improved}.
+
+%Comparative studies have consistently shown that PID controllers are outperformed by advanced nonlinear techniques under challenging conditions. ~\cite{wang2023robust} compared their robust adaptive controller against PID, demonstrating superior tracking performance and disturbance rejection. ~\cite{pan2021robust} showed that their robust dual channel disturbance rejection control (RDCDRC) significantly outperformed PID in attitude tracking under external disturbances, achieving a maximum roll tracking error of $3.67^\circ$ compared to substantially higher errors with PID.
+
+%%%%%%%%%%%%%%%%%
+
+%\noindent PID control remains widely adopted in quadcopter systems due to its simplicity and ease of implementation, typically within cascaded architectures for attitude and position regulation. Extensions such as fractional-order PID (FOPID) improve flexibility and disturbance rejection through additional tuning parameters. However, PID controllers are fundamentally limited by their reliance on linearized models, leading to reduced robustness under nonlinear dynamics, parametric uncertainties, and large operating deviations. They also inadequately address system coupling and time-varying disturbances. Consequently, advanced nonlinear and adaptive control strategies consistently outperform PID in tracking accuracy and disturbance rejection, highlighting the need for more robust and intelligent control frameworks for quadcopter applications.
+
+\noindent Proportional Integral Derivative (PID) control remains one of the most widely used strategies in quadcopter systems due to its simplicity, ease of implementation, and satisfactory performance in near-hover conditions. It is commonly implemented in cascaded architectures, where inner loops regulate angular rates and outer loops control attitude and position~\cite{samy2024robust,labbadi2020novel}. Variants such as fractional order PID (FOPID) have been proposed to enhance flexibility and disturbance rejection through additional tuning parameters~\cite{abro2025swarm}. 
+
+Despite these advantages, PID controllers exhibit inherent limitations when applied to highly nonlinear quadcopter dynamics. Their reliance on linearized models restricts robustness under large operating deviations, parametric uncertainties, and unmodeled dynamics~\cite{samy2024robust}. Furthermore, PID control provides limited rejection of time-varying disturbances and does not explicitly address the strong coupling between translational and rotational dynamics~\cite{labbadi2020novel,mofid2020adaptive}. Consequently, advanced nonlinear and adaptive control strategies have been shown to outperform PID in terms of tracking accuracy and disturbance rejection under challenging conditions~\cite{wang2023robust,pan2021robust}.\\
+
+%%%%%%%%%%%%%%
+
+%\subsection*{Linear Quadratic Regulator (LQR)}
+
+Linear Quadratic Regulator (LQR) is an optimal control technique that minimizes a quadratic cost function representing a trade off between state regulation and control effort. Linear Quadratic Regulator design requires a linear state space model, typically obtained through linearization around hover or trim conditions. The optimal feedback gain matrix is computed by solving the algebraic Riccati equation. While LQR provides systematic gain selection based on optimization criteria and guarantees stability for the linearized system, it shares similar limitations with PID control regarding robustness to model uncertainties and external disturbances. The performance of LQR controllers degrades significantly when the system operates far from the linearization point or experiences substantial parametric variations~\cite{samy2024robust,labbadi2020novel}. Recent literature on quadcopter control has shown limited focus on pure LQR approaches, with researchers increasingly favoring nonlinear and adaptive techniques. This trend reflects the recognition that linear control methods are fundamentally inadequate for addressing the challenges posed by quadcopter dynamics under realistic operating conditions.
+
+
+%\subsection*{Backstepping Control}
+
+%Backstepping is a recursive nonlinear control design methodology particularly suited for systems with cascaded or strict feedback structure. The technique systematically constructs a Lyapunov function and stabilizing control law by ``stepping back'' through the system dynamics, treating intermediate states as virtual controls~\cite{wang2023robust,zhang2020adaptive}.  ~\cite{wang2023robust} developed a backstepping based robust adaptive control scheme for quadrotors with uncertain aerodynamic parameters. The controller addressed singularities arising from inverse trigonometric functions in Euler angle representations by introducing continuous functions to replace signum functions, ensuring satisfaction of Lipschitz conditions. The approach guaranteed boundedness of estimation and tracking errors with modifiable boundaries, demonstrating superior performance compared to PID, geometric control, and other robust adaptive controllers through both numerical simulations and experimental validation. ~\cite{shevidi2024quaternion} proposed quaternion based adaptive backstepping control (QABC) combined with fast terminal sliding mode control for quadrotor UAVs. The cascaded control architecture first employed QABC for translational dynamics, then enhanced rotational control through quaternion based adaptive sliding mode control (QASMC) to mitigate chattering and ensure finite time convergence. Lyapunov stability analysis and Barbalat's Lemma verified asymptotic stability under unknown time varying uncertainties and significant initial errors. ~\cite{zhang2020adaptive} addressed the ``complexity explosion'' problem inherent in traditional backstepping where repeated differentiation of virtual control laws leads to increasingly complex expressions by integrating dynamic surface control (DSC) with integral sliding mode control (ISMC). The resulting Adaptive Robust Dynamic Surface Integral Sliding Mode Control (ADSISMC) strategy employed fuzzy logic systems to approximate unknown functions and adaptive switching control to compensate for approximation errors. Simulation results demonstrated superior tracking performance and robustness compared to conventional adaptive dynamic surface control (ADSC) and adaptive sliding mode control (ASMC), with maximum velocity tracking errors as low as $5.70 \times 10^{-4}$ for $z$ axis control.
+
+%\subsection*{Limitations of Classical Controllers}
+
+%Despite their theoretical elegance and practical utility, classical control strategies exhibit fundamental limitations when applied to quadcopter systems operating under realistic conditions. First, classical controllers suffer from model dependency, as they rely on accurate mathematical models, and their performance degrades significantly in the presence of unmodeled dynamics, parametric uncertainties, and time-varying system characteristics~\cite{wang2023robust,zhang2020adaptive}. Second, these controllers demonstrate limited capability to reject strong, time-varying external disturbances such as wind gusts, turbulence, and aerodynamic effects~\cite{pan2021robust,mofid2020adaptive}. Third, they exhibit insufficient robustness margins against parametric variations due to payload changes, battery depletion, and environmental conditions~\cite{fatemi2025adaptive,abera2024improved}. Fourth, classical controllers often do not explicitly account for actuator saturation, rate limits, and nonlinearities, leading to performance degradation or instability when constraints are active~\cite{anderson2020constrained,roy2024design}. Finally, advanced classical techniques like backstepping can suffer from complexity explosion, making real time implementation challenging~\cite{zhang2020adaptive}. These limitations have motivated the development of robust nonlinear control techniques, particularly sliding mode control and its variants, which offer enhanced robustness and disturbance rejection capabilities. The following sections examine these advanced control strategies in detail~\cite{fatemi2025adaptive,gedefaw2024improved,labbadi2020novel,abera2024improved}.
+
+
+\subsection{Sliding Mode Control Techniques}
+
+Sliding mode control (SMC) represents a powerful robust control methodology capable of handling matched uncertainties and disturbances through discontinuous control action. This section examines the fundamentals of SMC, higher order variants, and the super twisting algorithm, with critical analysis of their performance characteristics.
+
+%\subsection*{Fundamentals of Sliding Mode Control}
+
+Sliding mode control is based on the concept of constraining system trajectories to a predefined sliding surface in the state space, where desired dynamic behavior is achieved. The control law consists of two components: an equivalent control that maintains motion on the sliding surface, and a switching control that drives trajectories toward the surface~\cite{anderson2020constrained,mofid2020adaptive}. For a general nonlinear system, the sliding surface is typically defined as
+\begin{equation}
+s = \lambda e + \dot{e}
+\end{equation}
+where,  $e$ is the tracking error and $\lambda$ is a positive design parameter. The control law takes the form
+\begin{equation}
+u = u_{\mathrm{eq}} + u_{\mathrm{sw}}
+\end{equation}
+where,  $u_{\mathrm{eq}}$ is the equivalent control and $u_{\mathrm{sw}}$ is the switching control, often implemented as
+\begin{equation}
+u_{\mathrm{sw}} = -K\,\mathrm{sgn}(s)
+\end{equation}
+The discontinuous signum function $\mathrm{sgn}(s)$ provides robustness, however, it causes the chattering phenomenon at high frequency oscillations in the control signal~\cite{anderson2020constrained,elagib2023sliding}. In  ~\cite{eltayeb2020sliding} a robust SMC algorithm for attitude and altitude stabilization of quadrotor UAVs was designed, replacing the switching function with a smooth error function to reduce chattering influences. The study demonstrated that the proposed controller outperformed traditional SMC and conventional PID, LQR  controllers, effectively handling parameter uncertainties and external disturbances.  In ~\cite{elagib2023sliding}  a sliding mode controller was developed using the Newton Euler formulation, dividing the quadcopter model into underactuated and fully actuated subsystems. MATLAB/Simulink simulations validated its effectiveness under various disturbance conditions, although chattering reduction remained a challenge.% In ~\cite{mofid2020adaptive} presented a Proportional Integral Derivative Sliding Mode Control (PID-SMC) technique for attitude and position tracking. For unknown disturbance bounds, an adaptive PID-SMC method was developed using adaptive laws to estimate disturbance limits. Lyapunov stability analysis proved finite time convergence for a 6-DOF UAV system under external disturbances.
+
+\noindent In~\cite{mofid2020adaptive}, a Proportional Integral Derivative Sliding Mode Control (PID-SMC) technique was proposed for attitude and position tracking of a quadcopter. The method integrates PID control with sliding mode control to enhance tracking performance and robustness. To address unknown disturbance bounds, an adaptive PID-SMC scheme was developed, where adaptive laws were employed to estimate disturbance limits in real time. Lyapunov stability analysis demonstrated finite-time convergence of the closed loop system for the full 6-DOF UAV dynamics under external disturbances. Simulation results indicated improved tracking accuracy and robustness compared to conventional PID control. However, the proposed approach exhibits several limitations. The control design still relies on Euler angle based modeling, which is susceptible to singularities and limits performance under large angle maneuvers. Additionally, the presence of discontinuous switching in the sliding mode component may introduce residual chattering, potentially affecting actuator longevity and control smoothness. Furthermore, the adaptive laws increase computational complexity, which may pose challenges for real time implementation on resource constrained embedded systems.
+
+%\subsection*{Higher Order Sliding Mode Control}
+
+To address chattering while maintaining robustness, higher order sliding mode (HOSM) techniques have been developed. The HOSM controllers act on higher order time derivatives of the sliding variable, allowing continuous control signals while preserving finite time convergence and disturbance rejection~\cite{abera2024improved,kashi2025finite}. Second order sliding mode control has gained attention for quadcopter applications. By driving both sliding surface and its derivative to zero in finite time, second-order SMC achieves smoother control signals without high frequency switching~\cite{labbadi2020novel,abera2024improved}. The super twisting algorithm represents the most widely adopted second order sliding mode technique due to its ability to achieve finite time convergence with continuous control signals while requiring only knowledge of the sliding variable~\cite{gedefaw2024improved,labbadi2020novel,abera2024improved}.
+
+%\subsection*{Super Twisting Algorithm}
+
+The super twisting algorithm (STA) is a second-order sliding mode technique that eliminates chattering while maintaining robustness and finite time convergence. The standard STA control law is expressed as
+\begin{align}
+u &= -k_1 |s|^{1/2} \mathrm{sgn}(s) + u_1 \\
+\dot{u}_1 &= -k_2 \mathrm{sgn}(s)
+\end{align}
+where $k_1$ and $k_2$ are positive gains satisfying conditions related to disturbance bounds and their derivatives~\cite{gedefaw2024improved,labbadi2020novel,abera2024improved}.
+
+%In~\cite{labbadi2020novel}, a robust super-twisting integral sliding mode controller was proposed, which integrates the super-twisting algorithm (STA) with a modified PID-based sliding mode control (PID-SMC) structure. The quadrotor model, derived using the Euler Newton formulation, incorporated time varying disturbances. Lyapunov analysis confirmed stability, and simulations demonstrated superior tracking and reduced chattering compared to integral SMC. In~\cite{gedefaw2024improved}, a super-twisting sliding mode control (STSMC) scheme incorporating a novel fuzzy PID-based sliding surface was developed. The controller automatically tuned gains via fuzzy logic, reducing chattering and enhancing robustness. Simulation comparisons with SMC, Fuzzy SMC, and Fuzzy Super Twisting SMC showed improved tracking accuracy, disturbance rejection, and smooth control effort. ~\cite{abera2024improved} presented an improved nonsingular adaptive super twisting sliding mode controller using Newton Quaternion modeling. An adaptive law based on Lyapunov stability handled unknown disturbances, while Particle Swarm Optimization tuned controller gains. Simulation results showed substantial reductions in roll, pitch, and altitude tracking errors, outperforming existing sliding mode approaches. ~\cite{zhao2023sliding} proposed an improved super-twisting sliding mode algorithm enhancing convergence speed and disturbance rejection while further reducing chattering. Simulation studies validated its effectiveness for practical quadcopter control applications.
+
+%%%%%%%%%%%%%%%%%
+
+\noindent In~\cite{labbadi2020novel}, a robust super-twisting integral sliding mode controller integrating the super-twisting algorithm (STA) with a modified PID-based sliding mode control structure was proposed. The study demonstrated improved trajectory tracking and significant chattering reduction under time-varying disturbances, with Lyapunov analysis confirming system stability. However, the approach relies on Euler–Newton modeling, which is susceptible to singularities and limits performance during large-angle maneuvers. Additionally, gain tuning was not systematically optimized, which may affect adaptability under varying conditions.
+
+%\noindent In~\cite{gedefaw2024improved}, a super-twisting sliding mode controller incorporating a fuzzy PID-based sliding surface was developed. The controller achieved enhanced robustness, reduced chattering, and improved tracking accuracy through automatic gain tuning using fuzzy logic. Nevertheless, the fuzzy rule base introduces design complexity and depends on heuristic tuning, which may limit scalability and real-time implementation.
+
+
+\noindent In~\cite{gedefaw2024improved}, a super-twisting sliding mode controller incorporating a fuzzy PID-based sliding surface was proposed, demonstrating improved tracking accuracy, enhanced robustness, and significant chattering reduction through automatic gain tuning. More broadly, the integration of fuzzy logic with super-twisting sliding mode control (STSMC) has emerged as an effective strategy for handling uncertainties without requiring precise system models~\cite{gedefaw2024improved,roy2024design}. These approaches takes advantage of the rule-based adaptation to adjust control gains in real time, resulting in smoother control effort, improved disturbance rejection, and better handling of actuator constraints compared to conventional SMC techniques. Despite these advantages, the reliance on heuristic design remains a critical limitation. The performance of fuzzy-STSMC is highly dependent on the selection of membership functions and rule bases, which are often determined through trial-and-error or expert knowledge rather than systematic methodologies. This introduces challenges in reproducibility and scalability, particularly under varying operating conditions. Furthermore, limited consideration of complex nonlinearities and unmodeled dynamics may restrict their effectiveness in highly dynamic and real-world flight scenarios.
+
+%\noindent In~\cite{abera2024improved}, an improved nonsingular adaptive super-twisting sliding mode controller based on Newton–quaternion modeling was presented. The method effectively handled unknown disturbances and achieved superior tracking performance through adaptive laws and PSO-based gain optimization. Despite these improvements, the approach increases computational burden due to optimization and adaptation mechanisms, which may challenge real-time deployment on embedded platforms.
+
+%\noindent In~\cite{abera2024improved}, a nonsingular adaptive super-twisting sliding mode controller based on Newton–quaternion modeling was proposed to address attitude singularities and improve tracking performance. The study demonstrated that the controller effectively compensates unknown disturbances through adaptive laws, while PSO-based gain optimization enhanced convergence speed, reduced tracking errors, and improved robustness compared to conventional sliding mode methods. However, the integration of adaptive mechanisms and optimization algorithms increases computational complexity, which may limit real-time implementation on resource-constrained embedded systems. Additionally, the dependence on optimization procedures introduces potential sensitivity to parameter initialization and tuning conditions.
+
+\noindent In~\cite{abera2024improved,zhao2023sliding}, a nonsingular adaptive super-twisting sliding mode controller based on Newton–quaternion modeling was proposed. The study demonstrated improved tracking accuracy and robust disturbance rejection through adaptive laws and PSO-based gain optimization, with Lyapunov analysis ensuring system stability. However, the model neglected aerodynamic forces and torques, which limits its accuracy under real flight conditions, particularly during high-speed or aggressive maneuvers. This omission may lead to performance degradation when unmodeled aerodynamic effects become significant. %Additionally, the combined use of adaptive mechanisms and optimization increases computational complexity, posing challenges for real-time implementation on embedded hardware platforms.
+
+%\noindent In~\cite{zhao2023sliding}, an improved super-twisting sliding mode algorithm was proposed to enhance convergence speed and disturbance rejection while further reducing chattering. Simulation results confirmed improved performance over conventional methods. However, the study primarily focused on algorithmic improvements without comprehensive consideration of model uncertainties, actuator constraints, or real-world implementation challenges.
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+
+
+%\subsection*{Comparative Performance Analysis}
+
+%Table~\ref{tab:smc_comparison} summarizes the performance characteristics of different sliding mode control variants based on recent literature.
+
+%\begin{table}[h!]
+%\centering
+%\caption{Comparative Analysis of Sliding Mode Control Techniques}
+%\label{tab:smc_comparison}
+%\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{3cm}
+%|>{\raggedright\arraybackslash}p{2.5cm}
+%|>{\raggedright\arraybackslash}p{2.5cm}
+%|>{\raggedright\arraybackslash}p{2.5cm}
+%|>{\raggedright\arraybackslash}p{2.5cm}
+%|>{\raggedright\arraybackslash}X|}
+%\hline
+%\textbf{Control Method} & \textbf{Chattering} & \textbf{Convergence} & \textbf{Robustness} & \textbf{Complexity} & \textbf{Key References} \\ \hline
+
+
+
+
+%First Order SMC & High & Finite time & High (matched) & Low & \cite{mofid2020adaptive,elagib2023sliding,eltayeb2020sliding} \\ \hline
+
+%PID SMC & Moderate & Finite time & Moderate High & Low Moderate & \cite{labbadi2020novel,mofid2020adaptive} \\ \hline
+
+%Super Twisting & Low & Finite time & High & Moderate & \cite{gedefaw2024improved,labbadi2020novel,abera2024improved} \\ \hline
+
+%Adaptive Super Twisting & Very Low & Finite time & Very High & Moderate High & \cite{fatemi2025adaptive,abera2024improved,roy2024design} \\ \hline
+
+%Fuzzy Super Twisting & Very Low & Finite time & Very High & High & \cite{gedefaw2024improved} \\ \hline
+
+%\end{tabularx}
+%\end{table}
+
+%The evolution from first order SMC to adaptive super twisting algorithms represents a clear progression toward practical implementation. While first order SMC provides strong theoretical robustness, the chattering phenomenon limits its applicability in systems with fast actuators and unmodeled high-frequency dynamics~\cite{anderson2020constrained,elagib2023sliding}. Super twisting algorithms successfully address chattering while maintaining finite time convergence, making them highly suitable for quadcopter control~\cite{gedefaw2024improved,labbadi2020novel,abera2024improved}.
+
+%However, standard super twisting algorithms require knowledge of disturbance bounds to select appropriate gains. This limitation motivates the development of adaptive variants that can adjust gains online based on system behavior, as discussed in the following section~\cite{fatemi2025adaptive,abera2024improved,sang2024quadrotor}.
+
+
+%\section*{Adaptive Sliding Mode Control Methods}
+
+%Adaptive sliding mode control combines the robustness of SMC with online parameter adjustment mechanisms to handle unknown disturbance bounds, time varying uncertainties, and unmodeled dynamics. This section examines various adaptive strategies including gain tuning mechanisms, neural network integration, and fuzzy logic approaches.
+
+%\subsection*{Adaptive Gain Tuning Mechanisms}
+
+%Adaptive gain tuning in sliding mode control aims to automatically adjust controller parameters based on real time system behavior, eliminating the need for conservative gain selection and reducing control effort while maintaining robustness~\cite{fatemi2025adaptive,sang2024quadrotor}. ~\cite{fatemi2025adaptive} developed an adaptive sliding mode controller integrated with a multi layer perceptron (MLP) for quadrotor UAVs under disturbances. The controller employed Euler angle/quaternion modeling and provided real time adaptive control with disturbance compensation and chattering reduction. A Lyapunov based stability proof validated the approach, demonstrating that the integration of MLP with SMC enables effective online adaptation to varying operating conditions. ~\cite{roy2024design} designed a sliding mode control law with an adaptive super twisting algorithm (ASTA) featuring a proportional derivative (PD) sliding surface and proportional integral (PI) properties. The discontinuous control gain was adaptively tuned using functions of the sliding surface, with an alternative fuzzy logic tuning approach also explored. The controller considered actuator saturation, external disturbances, and unknown parameter variations. Lyapunov based analysis established asymptotic stability, and comparative simulations confirmed superiority over conventional SMC in dynamic stability, command tracking, and control effort. ~\cite{jiao2024trajectory} proposed trajectory tracking control using an adaptive integral terminal sliding mode under external disturbances. The adaptive mechanism adjusted controller gains based on tracking errors and sliding surface dynamics, ensuring robust performance without requiring precise knowledge of disturbance characteristics. The integral terminal sliding mode provided finite-time convergence, while the adaptive law enhanced robustness against time-varying uncertainties. ~\cite{sang2024quadrotor} developed an adaptive non singular terminal sliding mode controller with disturbance compensation for quadrotor UAV trajectory tracking. The quadrotor dynamic model was constructed using the Newton Euler method, considering system disturbances. An adaptive law dynamically adjusted the sliding surface gain, while a disturbance observer estimated and compensated for external disturbances and model uncertainties. Lyapunov analysis proved stability, and simulation results demonstrated enhanced disturbance resistance and improved trajectory tracking response speed.
+
+
+%\subsection*{Neural Network-Based Adaptive Control}
+
+%Neural networks offer powerful function approximation capabilities, making them attractive for adaptive control of systems with significant unmodeled dynamics and uncertainties. Integration of neural networks with sliding mode control enables online learning of system dynamics and disturbance characteristics~\cite{fatemi2025adaptive,mousavi2024observer}. ~\cite{nguyen2021adaptive} presented adaptive sliding mode control for attitude and altitude systems of quadcopter UAVs via neural networks. The neural network approximated unknown nonlinear functions and uncertainties in the system dynamics, with adaptive laws updating network weights online. The combined approach provided robust control performance while learning system characteristics during operation. ~\cite{mousavi2024observer} developed an observer based adaptive neural control framework integrating a high gain disturbance observer (HGDO) with a neural network based adaptive fractional sliding mode control (NN-AFSMC) scheme. A direct control approach reduced computational complexity by minimizing frequent online parameter updates. The HGDO-NN-AFSMC scheme ensured robust position and attitude tracking, achieving position error less than $0.03\,\mathrm{m}$ and attitude error below $0.02\,\mathrm{rad}$ under $20\%$ uncertainties. Compared to robust feedback linearization (RFBL) and nonsingular fast terminal sliding mode control (NFTSMC), the proposed method improved position tracking accuracy by $25\%$ and reduced settling time by approximately $18\%$. Lyapunov theory validated stability, and comprehensive simulation studies confirmed performance. ~\cite{zhang2020adaptive} employed fuzzy logic systems (FLS) as universal approximators in their Adaptive Robust Dynamic Surface Integral Sliding Mode Control (ADSISMC) strategy. The FLS approximated unknown continuous functions in the system dynamics, with adaptive laws adjusting fuzzy system parameters online. Adaptive switching control compensated for approximation errors, ensuring robustness. The approach eliminated the ``complexity explosion'' problem in backstepping while providing superior tracking performance and robustness compared to ADSC and ASMC methods.
+
+%\subsection*{Fuzzy Logic Integration}
+
+%Fuzzy logic provides an intuitive framework for incorporating expert knowledge and handling linguistic uncertainties in control systems. Integration with sliding mode control enables adaptive gain tuning and smooth control action~\cite{gedefaw2024improved,roy2024design}.~\cite{gedefaw2024improved} developed a Super Twisting Sliding Mode Control with a novel Fuzzy PID Surface for quadcopter trajectory tracking. The fuzzy logic controller automatically adjusted gain parameters to enhance robustness and reduce chattering. The super twisting algorithm with PID surface provided smooth control efforts. Numerical simulations demonstrated better tracking performance, parameter variation handling, and disturbance rejection compared to SMC, FSMC, and FSTSMC. The minimal and smooth control efforts proved economic feasibility and operational safety.~\cite{roy2024design} explored fuzzy logic tuning as an alternative approach for adaptive gain adjustment in their super twisting algorithm. The fuzzy system mapped sliding surface characteristics to appropriate gain values, providing smooth adaptation without requiring explicit mathematical models of uncertainties. This approach demonstrated improved performance in handling actuator saturation and unknown parameter variations.The integration of fuzzy logic with super twisting algorithms represents a promising direction for practical implementation, as it combines the robustness of higher order sliding mode control with the intuitive tuning capabilities of fuzzy systems. However, the design of fuzzy membership functions and rule bases requires careful consideration and often relies on trial-and-error or optimization techniques~\cite{gedefaw2024improved,roy2024design}.
+
+
+%\noindent Fuzzy logic has been increasingly integrated with super-twisting sliding mode control (STSMC) to enhance adaptability and reduce chattering by enabling real-time gain tuning without requiring precise system models~\cite{gedefaw2024improved,roy2024design}. Existing studies consistently show that fuzzy-based STSMC improves tracking accuracy, robustness to parameter variations, and disturbance rejection compared to conventional SMC-based approaches. In particular, fuzzy PID surfaces and rule-based gain adaptation provide smoother control action and better handling of actuator constraints, making these methods attractive for practical quadcopter applications. 
+
+%However, these approaches often shift complexity from mathematical modeling to heuristic design. The effectiveness of fuzzy-STSMC largely depends on the selection of membership functions and rule bases, which are typically derived through trial-and-error or expert knowledge rather than systematic procedures. This limits reproducibility and scalability, especially under varying operating conditions. Moreover, the lack of explicit consideration of system nonlinearities and unmodeled dynamics may constrain performance in highly dynamic flight scenarios.
+
+
+\subsection{Disturbance Observer-Based Approaches}
+
+Disturbance observers provide explicit estimation of external disturbances and unmodeled dynamics, enabling feedforward compensation that enhances control performance. This section examines disturbance observer design principles and their integration with sliding mode and adaptive control techniques.
+
+%\subsection*{Disturbance Observer Design}
+
+%Disturbance observers estimate unknown disturbances by comparing actual system behavior with predictions from a nominal model. The estimated disturbances are then used in feedforward compensation to cancel their effects on the system~\cite{pan2021robust,sang2024quadrotor,ahmed2022adaptive}.~\cite{pan2021robust} proposed a robust dual channel disturbance rejection control (RDCDRC) based on an inner outer loop framework. The control architecture combined a tracking differentiator (TD) for smooth signal generation, a sliding mode observer (SMO) to estimate virtual disturbances, and a disturbance rejection compensator (DRC). The mathematical model employed attitude kinematic and dynamic equations with roll, pitch, and yaw angles and angular velocities. Experimental validation on a quadrotor platform demonstrated effective trajectory tracking with fast response and low tracking error (maximum roll tracking error of $3.67^\circ$ in challenging scenarios), significantly outperforming PID and conventional CDRC methods. However, the study noted that disturbance estimation errors increase under fast time varying disturbances, and excessively large speed factors in the tracking differentiator can induce overshoot. Large observer gains may also introduce chattering, highlighting important trade offs in disturbance observer design~\cite{pan2021robust}.~\cite{sang2024quadrotor} incorporated a disturbance observer into their adaptive non singular terminal sliding mode controller to estimate and compensate for external disturbances and model uncertainties. The observer based approach enhanced disturbance resistance and improved trajectory tracking response speed. Lyapunov analysis confirmed closed loop stability, and the integration of disturbance estimation with adaptive sliding mode control enabled comprehensive handling of matched and mismatched uncertainties.
+
+\noindent Disturbance observer-based control has emerged as an effective strategy for enhancing robustness in quadcopter systems by estimating and compensating unknown disturbances in real time~\cite{pan2021robust,sang2024quadrotor,ahmed2022adaptive}. Existing studies demonstrate that integrating disturbance observers with advanced control frameworks significantly improves trajectory tracking accuracy, response speed, and disturbance rejection. For instance, dual-channel disturbance rejection architectures and observer-assisted sliding mode controllers effectively handle both matched and mismatched uncertainties, achieving superior performance compared to classical approaches~\cite{pan2021robust,sang2024quadrotor}. However, these methods introduce inherent design trade-offs. Disturbance estimation accuracy degrades under fast time-varying disturbances, while high observer gains required for rapid estimation may induce chattering and amplify noise sensitivity. Additionally, reliance on nominal models limits robustness against significant modeling errors, and tuning parameters such as observer gains and differentiator speeds remains challenging. These limitations highlight the need for more adaptive and computationally efficient disturbance compensation strategies suitable for real-time applications.
+
+%\subsection*{Active Disturbance Rejection Control}
+
+%Active Disturbance Rejection Control (ADRC) represents a disturbance observer based approach that treats both external disturbances and unmodeled dynamics as a ``total disturbance'' to be estimated and compensated~\cite{ahmed2022adaptive}.~\cite{ahmed2022adaptive} designed an adaptive output feedback ADRC for attitude and position regulation of uncertain quadrotors subject to unknown disturbances. The controller utilized detailed quadrotor dynamics in Euler/quaternion formulation and integrated a disturbance observer. Lyapunov-based stability analysis validated the approach. The ADRC framework provided robust performance by explicitly estimating and canceling the total disturbance, thereby reducing the burden on the feedback controller.Although ADRC does not require detailed knowledge of disturbance characteristics or precise system parameters, its performance depends critically on observer bandwidth selection and the accuracy of disturbance estimation~\cite{ahmed2022adaptive}.
+
+%\subsection*{Observer Based Adaptive Control}
+
+%Combining disturbance observers with adaptive control mechanisms provides a comprehensive framework for handling uncertainties and disturbances~\cite{aghazamani2024fault,mousavi2024observer}.~\cite{aghazamani2024fault} developed a fault tolerant adaptive fractional order sliding mode controller incorporating a disturbance observer for quadrotor position tracking. The controller addressed actuator faults, parametric uncertainty, and wind disturbances. The quadrotor model, including disturbances, was derived using Euler Lagrange equations. Lyapunov theory guaranteed stability and finite time convergence. Numerical simulations demonstrated superior robustness against actuator faults and wind disturbances compared to existing methods.~\cite{mousavi2024observer} integrated a high gain disturbance observer (HGDO) with neural network based adaptive fractional sliding mode control (NN-AFSMC). The HGDO estimated external disturbances and model uncertainties, while NN-AFSMC provided adaptive control action. The direct control structure reduced computational complexity. The combined scheme achieved position error less than $0.03\,\mathrm{m}$ and attitude error below $0.02\,\mathrm{rad}$ under $20\%$ uncertainties, improving tracking accuracy by $25\%$ and reducing settling time by approximately $18\%$ compared to RFBL and NFTSMC.~\cite{sun2023attitude} employed a nonlinear disturbance observer for mismatched disturbances in a fault tolerant controller combining fractional order sliding mode and backstepping control. The observer estimated both matched and mismatched disturbances, enabling accurate and rapid attitude control even in the presence of actuator faults. Simulation and experimental results demonstrated that the UAV achieved desired commands within approximately $0.96\,\mathrm{s}$, with improved convergence rate and robustness.The integration of disturbance observers with adaptive sliding mode control constitutes a powerful approach for quadcopter control, providing explicit disturbance compensation while maintaining robustness through sliding mode action. Nevertheless, challenges remain regarding observer tuning, computational burden, and performance under rapidly varying disturbances~\cite{pan2021robust,sun2023attitude,mousavi2024observer}.
+
+
+%\noindent The integration of disturbance observers with adaptive control frameworks has proven effective in enhancing robustness and fault tolerance in quadcopter systems~\cite{aghazamani2024fault,mousavi2024observer,sun2023attitude}. Existing studies demonstrate that combining observer-based disturbance estimation with adaptive sliding mode or neural network control improves tracking accuracy, convergence speed, and resilience against actuator faults and parametric uncertainties. These approaches enable compensation of both matched and mismatched disturbances, resulting in superior performance compared to conventional methods. However, their effectiveness depends heavily on accurate observer tuning, and performance may degrade under rapidly time-varying disturbances. Additionally, the integration of observers with adaptive and intelligent controllers increases computational complexity, posing challenges for real-time implementation in embedded systems.
+
+
+\subsection{Critical Analysis of Existing Super Twisting Controllers}
+
+Despite significant advances in super twisting sliding mode control for quadcopters, several critical limitations persist in existing approaches. This section provides a detailed analysis of these limitations, focusing on unmodeled dynamics, aerodynamic effects, actuator nonlinearities, and chattering phenomena.
+
+%\subsection*{Unmodeled Dynamics and Parameter Variations}
+%Most existing super twisting controllers rely on simplified mathematical models that neglect important physical phenomena, leading to performance degradation under realistic operating conditions~\cite{wang2023robust,samy2024robust}.~\cite{wang2023robust} explicitly addressed uncertain aerodynamic parameters in their robust adaptive control scheme, noting that conventional controllers often assume perfect knowledge of system parameters. The study demonstrated that aerodynamic drag, which varies with velocity and environmental conditions, significantly affects trajectory tracking accuracy. The proposed backstepping based adaptive controller estimated uncertain parameters online, guaranteeing boundedness of estimation and tracking errors. Experimental validation confirmed superior performance compared to controllers that neglected aerodynamic uncertainties.Parameter variations due to payload changes represent another critical challenge.~\cite{kashi2025finite} developed a finite time adaptive robust nonlinear control for uncertain quadrotor UAVs carrying loads under external disturbances. The study employed an adaptive integral fast terminal sliding mode control strategy (AIFTSMC) incorporating adaptive rules for improved robustness. The integrated translational load model was derived using the Lagrange Euler formulation. Simulation comparisons and sensitivity analyses demonstrated superior performance in handling load variations and initial condition uncertainties.~\cite{anderson2020constrained} addressed unmodeled payload dynamics in their constrained robust model reference adaptive control of a tilt rotor quadcopter pulling an unmodeled cart. The controller utilized barrier Lyapunov functions to guarantee user-defined constraints on trajectory tracking error and control inputs despite uncertain inertial properties and unknown payload dynamics. Flight experiments verified effectiveness under completely unmodeled interactions.However, many super twisting controllers do not explicitly address unmodeled dynamics compensation.~\cite{labbadi2020novel} and ~\cite{gedefaw2024improved}, although demonstrating strong simulation performance, did not comprehensively treat unmodeled rotor dynamics, aerodynamic effects, or structural flexibilities. This limitation restricts practical applicability in real world environments where such effects are significant~\cite{wang2023robust,anderson2020constrained}.
+
+\noindent Existing studies highlight that neglecting aerodynamic effects and payload variations significantly degrades quadcopter control performance under realistic conditions~\cite{wang2023robust,kashi2025finite,anderson2020constrained}. Controllers incorporating adaptive estimation of aerodynamic parameters and load dynamics demonstrate improved tracking accuracy, robustness, and constraint handling compared to conventional approaches. These methods confirm the critical role of modeling uncertainties such as drag and payload-induced variations. However, many super-twisting sliding mode controllers still rely on simplified models and do not explicitly compensate for unmodeled dynamics, including rotor aerodynamics and structural effects~\cite{labbadi2020novel,gedefaw2024improved}. This limitation reduces their reliability and effectiveness in real-world applications, where such dynamics are unavoidable and significantly influence system behavior.
+
+
+
+%\subsection*{Aerodynamic Drag and Environmental Disturbances}
+
+%Aerodynamic drag forces, which are nonlinear functions of velocity and environmental conditions, represent significant unmodeled dynamics in many quadcopter control studies~\cite{wang2023robust,samy2024robust}. ~\cite{samy2024robust} developed a robust adaptive nonsingular fast terminal sliding mode controller for aggressive quadrotor trajectory tracking, explicitly incorporating first order drag effects into a high fidelity dynamical model. The study showed that neglecting drag leads to substantial tracking errors, particularly during high speed maneuvers. Numerical simulations demonstrated superior robustness against parametric uncertainties and wind induced disturbances compared to adaptive recursive sliding mode control and nonlinear extended state observer based recursive sliding mode control.Environmental disturbances such as wind gusts, turbulence, and ground effects pose additional challenges. ~\cite{aghazamani2024fault} addressed wind disturbances in their fault tolerant adaptive fractional order sliding mode controller, demonstrating robust performance under moderate wind conditions. Nevertheless, extreme wind scenarios and rapidly varying turbulence remain difficult for existing approaches.~\cite{pan2021robust} observed that disturbance estimation errors increase under fast time varying disturbances, highlighting a fundamental limitation of observer based strategies. While sliding mode observers effectively estimate slowly varying disturbances, performance degrades in the presence of high frequency or rapidly changing disturbances. This limitation is particularly critical for quadcopters operating in urban environments or near obstacles where turbulent airflow is prevalent~\cite{pan2021robust,aghazamani2024fault}.
+
+
+\noindent Aerodynamic drag and environmental disturbances such as wind gusts and turbulence significantly affect quadcopter performance and are often inadequately addressed in control design~\cite{wang2023robust,samy2024robust}. Studies incorporating drag into high-fidelity models demonstrate improved tracking accuracy and robustness, particularly during aggressive maneuvers. Similarly, adaptive and fault-tolerant controllers show effectiveness under moderate wind conditions~\cite{aghazamani2024fault}. However, existing approaches remain limited in handling rapidly varying disturbances. Observer-based methods, while effective for slowly varying uncertainties, exhibit degraded estimation accuracy under high-frequency disturbances~\cite{pan2021robust}. This limitation is critical in real-world environments with turbulent airflow, highlighting the need for more responsive and robust disturbance compensation strategies.
+
+
+%\subsection *{Actuator Nonlinearities and Saturation}
+
+%Actuator constraints, including saturation limits, dead zones, and rate limits, significantly affect control performance but are often neglected in theoretical controller design~\cite{anderson2020constrained,roy2024design}.
+
+%Roy et al.~\cite{roy2024design} explicitly considered actuator saturation in their sliding mode control law with an adaptive super twisting algorithm. The study demonstrated that ignoring saturation constraints can lead to integrator windup, performance degradation, and even instability. The proposed controller incorporated anti-windup mechanisms and adaptive gain tuning to maintain performance under saturation conditions. Comparative simulations confirmed superiority in handling actuator constraints compared to conventional SMC.
+
+%Actuator dynamics, including motor time constants and propeller inertia, introduce additional phase lag and bandwidth limitations. Sun et al.~\cite{sun2023attitude} addressed actuator faults in their fault tolerant controller, noting that actuator failures and degradation are common in practical quadcopter operations. The fractional order sliding mode and backstepping control combined with a nonlinear disturbance observer enabled stable operation even with partial actuator failures. However, complete actuator failures or severe degradation remain challenging scenarios.
+
+%The interaction between actuator nonlinearities and sliding mode control can exacerbate chattering. When actuators cannot respond to high frequency switching commands, the actual control input deviates from the commanded value, potentially leading to limit cycles and sustained oscillations~\cite{sun2023attitude,roy2024design}. This issue is particularly problematic in low cost quadcopters equipped with brushed motors and basic electronic speed controllers.
+
+%\subsection*{Chattering Phenomenon}
+
+%Despite the theoretical advantages of super twisting algorithms in reducing chattering, practical implementation challenges persist~\cite{gedefaw2024improved,labbadi2020novel,sun2023attitude}.~\cite{sun2023attitude} stated that the inherent chattering problem of traditional reaching laws has not been completely eliminated, even with advanced techniques. The study introduced a new reaching law and fractional-order sliding mode surface that significantly reduced chattering in UAV attitude control. Nevertheless, residual oscillations remained under aggressive maneuvers and in the presence of measurement noise.~\cite{gedefaw2024improved} mitigated chattering by combining the super twisting algorithm with a fuzzy PID surface and automatic gain adjustment. Although simulations demonstrated smooth control efforts, the absence of experimental validation leaves open questions regarding real-world performance under sensor noise and actuator dynamics. ~\cite{pan2021robust} observed that large observer gains in disturbance rejection control can induce chattering, emphasizing the trade off between disturbance rejection capability and control smoothness. Careful parameter tuning was required to balance these competing objectives.The chattering phenomenon is particularly problematic because it causes actuator wear and reduces system lifespan~\cite{anderson2020constrained,sun2023attitude}, excites unmodeled high-frequency dynamics~\cite{elagib2023sliding,eltayeb2020sliding}, increases energy consumption~\cite{gedefaw2024improved,labbadi2020novel}, and generates acoustic noise and structural vibrations~\cite{mofid2020adaptive,elagib2023sliding}.Although adaptive super twisting algorithms have significantly reduced chattering compared to first order SMC, complete elimination remains difficult, especially under challenging operating conditions involving measurement noise, actuator dynamics, and rapidly varying disturbances~\cite{gedefaw2024improved,sun2023attitude,labbadi2020novel}.
+
+
+
+\noindent Although super-twisting sliding mode control (STSMC) reduces chattering compared to first-order SMC, complete elimination remains a practical challenge~\cite{gedefaw2024improved,labbadi2020novel,sun2023attitude}. Existing studies demonstrate that modified reaching laws, fuzzy-based tuning, and adaptive strategies improve control smoothness and tracking performance. However, residual oscillations persist under aggressive maneuvers, measurement noise, and actuator dynamics~\cite{sun2023attitude}. Furthermore, disturbance observer designs introduce trade-offs, where high gains improve disturbance rejection but may reintroduce chattering~\cite{pan2021robust}. These limitations are critical, as chattering leads to actuator wear, excitation of unmodeled dynamics, and increased energy consumption. Consequently, achieving smooth and robust control under realistic conditions remains an open challenge.
+
+
+
+%\section{The critiques of the existing literature relevant to the study}
+
+%\cite{shevidi2024quaternion} provides a quaternion-based approach for quadrotor UAV control, addressing challenges like singularity and uncertainties that affects conventional SMC based on euler approac. The proposed quaternion based Adaptive Backstepping Control and Adaptive Fast Terminal Sliding Mode Control minimize chattering and ensure robust performance. Research gaps include the need for singularity-free attitude representation and effective handling of parametric uncertainties, justifying the design of a quaternion-based adaptive supertwisting sliding mode controller. Relevant references can be found in the literature on UAV control methodologies.
+
+
+
+	%\newpage		
+\section{The Research Gaps}
+%Despite advancements, there remain gaps in the current research that justify the development of a quaternion-based adaptive supertwisting sliding mode controller.
+
+%Singularity and Unwinding Issues: While quaternion-based methods address singularity, they can suffer from unwinding issues. A quaternion-based adaptive supertwisting approach could mitigate these problems by leveraging the hypersphere properties of quaternions for global stability \cite{yazdanshenas2024quaternion}.
+
+%Chattering and Robustness: Although super-twisting SMC reduces chattering, further improvements are needed to enhance robustness against high uncertainties and disturbances. An adaptive approach that dynamically adjusts controller parameters could provide a more resilient solution \cite{abera2024improved} \cite{hoang2018adaptive}.
+
+%Integration of Advanced Techniques: Combining quaternion-based representations with adaptive supertwisting SMC could offer a comprehensive solution that addresses both attitude control and trajectory tracking challenges, providing a unified framework for robust quadcopter control \cite{shevidi2024quaternion} \cite{rao2024adaptive}.
+
+%While the current literature provides a solid foundation for quadcopter control, the integration of quaternion-based adaptive supertwisting sliding mode control represents a promising direction for future research. This approach could address existing limitations in singularity, robustness, and chattering, offering a more effective solution for the complex dynamics of quadcopters
+
+%\section{Research Gaps and Future Directions}
+
+Based on the comprehensive analysis of existing literature, this section identifies critical research gaps and provides justification for developing enhanced Adaptive Super Twisting Sliding Mode Controllers (ASTSMC) with unmodeled dynamics compensation. The critical analysis reveals several persistent limitations in existing quadcopter control strategies.
+
+
+%\subsection*{Identified Limitations in Current Approaches}
+\begin{itemize}
+    \item  Incomplete Treatment of Unmodeled Dynamics : Despite the advances in super-twisting sliding mode control, most existing approaches rely on simplified system models that neglect critical physical effects such as aerodynamic drag and  rotor dynamics. Although some studies have attempted to incorporate specific aspects, such as first-order drag or limited aerodynamic parameter estimation, these efforts remain fragmented. There is currently no comprehensive control framework that systematically accounts for unmodeled dynamics within super-twisting control architectures. This gap limits the robustness and real-world applicability of such controllers, particularly under varying operating conditions where aerodynamic and rotor-induced effects play a significant role.
+
+    
+
+    \item  Limited Adaptive Gain Tuning Under Strong Disturbances : Existing adaptive gain tuning mechanisms in super-twisting control frameworks often rely on assumptions of slowly varying disturbances, known bounds on disturbance rates, and smooth disturbance profiles. However, these assumptions are frequently violated in real-world quadcopter operations, where systems are exposed to abrupt wind gusts, turbulent airflow, rapid payload variations, and aggressive maneuvers involving large attitude changes. Under such conditions, the effectiveness of adaptive and observer-based strategies degrades, as disturbance estimation accuracy significantly deteriorates during fast time-varying disturbances. This highlights a fundamental limitation of current approaches, which lack sufficient responsiveness and adaptability to handle highly dynamic and unpredictable operating environments.
+
+    \item Experimental Validation Gaps : Many recent studies rely primarily on simulation based validation : Several recent studies, including  and  present only numerical simulations or simulation demonstrations. While simulations provide valuable insights, they cannot fully capture real world effects such as sensor noise and measurement delays, actuator dynamics and saturation, environmental variability, and communication delays in distributed control systems.
+Studies incorporating experimental validation , demonstrate the importance of real world testing in revealing practical limitations that are not evident in simulation environments.
+
+
+    
+\end{itemize}
+
+
+
+
+%Most super twisting controllers rely on simplified models that neglect aerodynamic drag effects (velocity-dependent and environmental) and rotor dynamics and blade flapping .While some studies address specific aspects  for aerodynamic parameters, for first order drag, no comprehensive framework exists for systematic unmodeled dynamics compensation within super twisting control architectures.
+
+%Most super twisting controllers rely on simplified models that neglect aerodynamic drag effects (velocity-dependent and environmental)~\cite{wang2023robust,samy2024robust} and rotor dynamics and blade flapping~\cite{anderson2020constrained}.While some studies address specific aspects ~\cite{wang2023robust} for aerodynamic parameters,~\cite{samy2024robust} for first order drag, no comprehensive framework exists for systematic unmodeled dynamics compensation within super twisting control architectures.
+
+%\subsubsection*{2. Limited Adaptive Gain Tuning Under Strong Disturbances}
+
+%Existing adaptive mechanisms often assume slowly varying disturbances~\cite{pan2021robust,sang2024quadrotor}, known bounds on disturbance rates of change~\cite{labbadi2020novel,abera2024improved}, and smooth disturbance characteristics~\cite{aghazamani2024fault}. These assumptions are frequently violated in practical scenarios involving sudden wind gusts and turbulence~\cite{aghazamani2024fault}, rapid payload changes~\cite{kashi2025finite}, aggressive maneuvers with large attitude variations~\cite{samy2024robust}, and operation near obstacles with turbulent airflow~\cite{pan2021robust}.~\cite{pan2021robust} explicitly noted that disturbance estimation errors increase under fast time varying disturbances, indicating a fundamental limitation of current observer based approaches.
+
+%\subsubsection*{3. Insufficient Integration of Multiple Compensation Mechanisms}
+
+%Few studies integrate the following within a unified framework:
+
+%\begin{itemize}
+   % \item Disturbance observers for explicit disturbance estimation~\cite{pan2021robust,ahmadinejad2018autonomous,mousavi2024observer}
+   % \item Adaptive laws for parameter uncertainty handling~\cite{fatemi2025adaptive,sang2024quadrotor,wang2023robust}
+   % \item Super-twisting algorithms for chattering reduction~\cite{gedefaw2024improved,labbadi2020novel,abera2024improved}
+   % \item Neural networks or fuzzy systems for unmodeled dynamics approximation~\cite{fatemi2025adaptive,zhang2020adaptive,mousavi2024observer}
+%\end{itemize}
+
+%Most approaches address only one or two aspects, leaving gaps in comprehensive robustness. For example:
+
+%\begin{itemize}
+   % \item Labbadi et al.~\cite{labbadi2020novel} achieved effective chattering reduction but did not incorporate adaptive parameter estimation.
+    %\item Wang et al.~\cite{wang2023robust} proposed robust adaptive control but employed backstepping rather than super-twisting techniques.
+    %\item Mousavi et al.~\cite{mousavi2024observer} integrated observers and neural networks but at the cost of high computational complexity.
+%\end{itemize}
+
+%\subsubsection*{4. Mathematical Modeling Assumptions}
+
+%Common simplifying assumptions limiting practical applicability include:
+
+%\begin{itemize}
+    %\item Rigid-body assumption (neglecting structural flexibility)~\cite{ref8,ref16}
+    %\item Perfect actuator models (ignoring dynamics and nonlinearities)~\cite{ref2,ref6}
+   % \item Ideal sensors (no noise, delays, or quantization effects)~\cite{ref11,ref13}
+   % \item Symmetric configuration (neglecting manufacturing tolerances)~\cite{ref4,ref10}
+%\end{itemize}
+
+ %Sun et al.~\cite{ref16} noted that certain disturbance observers are computationally complex and unsuitable for real-time UAV applications, highlighting the trade-off between modeling accuracy and computational feasibility.
+
+%\subsubsection*{3. Experimental Validation Gaps}
+
+%Many recent studies rely primarily on simulation based validation. Several recent studies, including ~\cite{gedefaw2024improved}, ~\cite{abera2024improved}, and ~\cite{sang2024quadrotor}, present only numerical simulations or simulation demonstrations. While simulations provide valuable insights, they cannot fully capture real world effects such as sensor noise and measurement delays~\cite{ahmed2022adaptive,mousavi2024observer}, actuator dynamics and saturation~\cite{anderson2020constrained,roy2024design}, environmental variability~\cite{aghazamani2024fault}, and communication delays in distributed control systems~\cite{abro2025swarm}. Studies incorporating experimental validation ~\cite{wang2023robust}, ~\cite{pan2021robust}, ~\cite{anderson2020constrained} demonstrate the importance of real world testing in revealing practical limitations that are not evident in simulation environments.
+
+
+

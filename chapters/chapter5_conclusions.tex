@@ -1,0 +1,29 @@
+				\chapter{CONCLUSIONS \& RECOMMENDATIONS}
+%\section*{Conclusion}
+%\section*{\center{CONCLUSION}}
+%\addcontentsline{toc}{chapter}{ Conclusion}
+%\section{Introduction}
+%The main conclusions and findings from the research study on the Marshall-Olkin Alpha Power Transformed Extended-Inverted Kumaraswamy distribution are summarized in this chapter. Additionally, it provides recommendations for future potential areas of investigation and makes use of the proposed distribution.
+%\section{Summary of Findings}
+%This study proposed a novel of  four parameters distribution using  the Marshall-Olkin Alpha Power Transformed Extended-X family of distribution which increase the flexibility and applicability of the Inverted Kumaraswamy Distribution . 
+%The  Marshall-Olkin Alpha Power Transformed Extended-X family of distribution is the extension of Alpha Power Transformed Extended-X family of distribution using the Marshall-Olkin method.\\
+%The Probability density function, Cumulative density function, survival function and hazard rate function of the MOAPTE-IK are mathematically derived  and graphically presented in this work. 
+  
+%Maximum Likelihood approach for parameter estimation is used, and the behavior of the resulting estimates was assessed through a Monte Carlo simulation, the performance of the estimators is evaluated using Root Mean Squared Error (RMSE) and bias. \\
+%The suggested model was applicable  using two datasets and was compared with the existing models  using selection criteria and goodness-of-fit tests to demonstrate its flexibility.
+
+
+\section{Conclusions}	
+Quadrotor UAV trajectory tracking remains challenging due to highly coupled nonlinear dynamics, parametric uncertainties, and external disturbances. Conventional controllers like PID lack robustness under model mismatches, while classical sliding mode control suffers from chattering and manual gain-tuning difficulties. This research addresses these limitations by developing a Particle Swarm Optimization (PSO) tuned Adaptive Super Twisting Sliding Mode Controller (ASTSMC) based on a quaternion dynamic model that captures unmodeled aerodynamic effects and avoids gimbal lock.
+
+The proposed PSO-ASTSMC achieved remarkable performance improvements: 27\% reduction in attitude errors, 9\% enhancement in position accuracy, and 28--30\% decrease in combined tracking error and control effort. Under 50\% parametric variation (1kg to 1.5kg mass increase), ASTSMC demonstrated exceptional robustness with only 2\% Y-axis degradation compared to Back stepping SMC's catastrophic 97\% failure representing 48.5 times superior performance. The controller achieved 65\% thrust reduction versus PID's 36\%, ensuring energy efficient operation critical for battery powered UAVs.
+
+For disturbance rejection under continuous $d = 1 - \cos(t)$ forcing, ASTSMC maintained 25\% X-axis, 7\% Y-axis, and 20\% Z-axis degradation while back stepping sliding mode controller (BSMC) collapsed with 72--92\% deterioration. The adaptive super twisting mechanism eliminated chattering while maintaining smooth torque profiles, preventing actuator saturation.
+
+This work's novelty lies in synergistically combining PSO optimization with adaptive super twisting control on a realistic quaternion model, achieving parametric invariance, finite time convergence, and superior disturbance attenuation with minimal control expenditure establishing a robust framework for autonomous flight under model uncertainties and environmental disturbances.
+
+	\section{Recommendations}	
+
+\noindent Although the proposed controller was intended for real-time implementation, its deployment on the Carbon Aeronautics platform was not completed due to limitations associated with sensing, estimation, and hardware integration rather than insufficient computational power. The Teensyduino microcontroller provided adequate processing capability for the execution of the quaternion-based adaptive super-twisting sliding mode control algorithm. However, successful hardware implementation required dependable real-time acquisition of attitude, angular rate, altitude, and translational state information, together with robust sensor fusion and actuator-level validation. The Carbon Aeronautics platform, in its available configuration, did not provide the complete measurement and integration framework necessary to support the full controller safely and reliably. Consequently, experimental implementation was deferred, and the controller was assessed in simulation. Future studies should emphasize enhanced sensing, state estimation, and full hardware-software integration to enable practical real-time validation.
+    
+
